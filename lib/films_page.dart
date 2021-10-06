@@ -62,30 +62,36 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
                   width: 200,
                   child: TextField(
                     autofocus: false,
-                    style: TextStyle(fontSize: 22.0, color: Colors.white),
-                    decoration: const InputDecoration(
-                      hintText: 'Keyword',
-                    ),
-                    controller: myController,
+                    style: TextStyle(fontSize: 22.0, color: Color(0xFFbdc6cf)),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: 'Input ID 1-6',
+                      contentPadding:
+                      const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.circular(0),
+                      ),
+                    ),controller: myController,
                   ),
                 ),
                 const Spacer(flex: 1),
-                GestureDetector(
-                  onTap: () {
-                    Logger()..d("test ${myController.text}");
+                RaisedButton(
+                  color: Colors.white,
+                  child: new Text("Search"),
+                    onPressed: () {
                       Films.connectToApi(myController.text).then((value) {
-                      films = value;
-                      setState(() {}
-                      );
-                    });
-                  },
-                  child: const Image(
-                    image: AssetImage("assets/films.png"),
-                    width: 50,
-                    height: 50,
-                  ),
-                ),
-                Spacer(flex: 1),
+                        films = value;
+                        setState(() {}
+                        );
+                      });
+                    }),
+                const Spacer(flex: 1),
               ],
             ),
             const Spacer(
@@ -96,7 +102,7 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
                 const Spacer(
                   flex: 1,
                 ),
-                Text((films != null) ? films!.title : "No Data",
+                Text((films != null) ? films!.title + "\n" + films!.episode_id.toString() + "\n" + films!.opening_crawl + "\n" + films!.director + "\n" + films!.producer: "No Data",
                     style: TextStyle(color: Colors.white)),
                 const Spacer(
                   flex: 1,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 class Films
@@ -12,19 +11,19 @@ class Films
 
 
   Films({this.title = "",
-      this.episode_id = 0,
+    this.episode_id = 0,
     this.opening_crawl = "",
     this.director = "",
     this.producer = ""});
 
-  factory Films.createFilm(Map<String, dynamic> object)
+  factory Films.fromJson(Map<String, dynamic> json)
   {
     return Films(
-      title: object['title'],
-      episode_id: object['episode_id'],
-      opening_crawl: object['opening_crawl'],
-      director: object['director'],
-      producer: object['producer']
+        title: json['title'],
+        episode_id: json['episode_id'],
+        opening_crawl: json['opening_crawl'],
+        director: json['director'],
+        producer: json['producer']
 
     );
   }
@@ -37,13 +36,7 @@ class Films
     );
     var jsonObject = json.decode(apiResult.body);
 
-    return Films.createFilm(jsonObject);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Films.fromJson(jsonObject);
   }
 
 }
