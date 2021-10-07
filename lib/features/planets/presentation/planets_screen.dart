@@ -1,31 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import 'main.dart';
-import 'model/planets.dart';
+import '../../../main.dart';
+import '../model/planets.dart';
 
-class PlanetsPage extends StatelessWidget {
+class PlanetsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyPlanetsPage(title: 'PLANETS PAGE'),
+      home: const MyPlanetsScreen(title: 'PLANETS PAGE'),
     );
   }
 }
 
-class MyPlanetsPage extends StatefulWidget {
-  const MyPlanetsPage({Key? key, required this.title}) : super(key: key);
+class MyPlanetsScreen extends StatefulWidget {
+  const MyPlanetsScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyPlanetsPage> createState() => _MyPlanetsPageState();
+  State<MyPlanetsScreen> createState() => _MyPlanetsScreenState();
 }
 
-class _MyPlanetsPageState extends State<MyPlanetsPage>{
+class _MyPlanetsScreenState extends State<MyPlanetsScreen>{
   Planets? planets;
   final myController = TextEditingController();
 
@@ -35,7 +35,16 @@ class _MyPlanetsPageState extends State<MyPlanetsPage>{
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("PLANETS PAGE"),
+        title: const Text("PLANETS PAGE"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -45,7 +54,7 @@ class _MyPlanetsPageState extends State<MyPlanetsPage>{
               flex: 1,
             ),
             const Image(
-              image: AssetImage("assets/logo.png"),
+              image: AssetImage("lib/assets/logo.png"),
               width: 100,
               height: 100,
             ),
@@ -85,6 +94,13 @@ class _MyPlanetsPageState extends State<MyPlanetsPage>{
                     color: Colors.white,
                     child: new Text("Search"),
                     onPressed: () {
+                      if (myController.text.isEmpty){
+                        Planets.connectToApi("3").then((value) {
+                          planets = value;
+                          setState(() {}
+                          );
+                        });
+                      }
                       Planets.connectToApi(myController.text).then((value) {
                         planets = value;
                         setState(() {}
@@ -103,15 +119,16 @@ class _MyPlanetsPageState extends State<MyPlanetsPage>{
                   flex: 1,
                 ),
                 Text((planets != null) ?
-                    planets!.name + "\n" +
-                    planets!.rotationPeriod + "\n" +
-                    planets!.orbitalPeriod + "\n" +
-                    planets!.diameter + "\n" +
-                    planets!.climate + "\n" +
-                    planets!.gravity + "\n" +
-                    planets!.terrain + "\n" +
-                    planets!.surfaceWater + "\n" +
-                    planets!.population + "\n" : "No Data",
+                    planets!.name! + "\n" +
+                    planets!.rotationPeriod! + "\n" +
+                    planets!.orbitalPeriod! + "\n" +
+                    planets!.diameter! + "\n" +
+                    planets!.climate! + "\n" +
+                    planets!.gravity! + "\n" +
+                    planets!.terrain! + "\n" +
+                    planets!.surfaceWater! + "\n" +
+                    planets!.population! + "\n" +
+                    planets!.url! + "\n" : "No Data",
                     style: TextStyle(color: Colors.white)),
                 const Spacer(
                   flex: 1,

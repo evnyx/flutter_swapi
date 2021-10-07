@@ -39,6 +39,10 @@ dependencies:
   json_annotation: ^4.0.1
   logger: ^1.1.0
   dio: ^4.0.0
+  splashscreen:
+  injectorio:
+    git:
+      url: https://github.com/kiratheone/injector_io
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,15 +69,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/films.png
-    - assets/logo.png
-    - assets/peoples.png
-    - assets/planets.png
-    - assets/species.png
-    - assets/splash.png
-    - assets/star_wars_logo.png
-    - assets/starships.png
-    - assets/vehicles.png
+    - lib/assets/films.png
+    - lib/assets/logo.png
+    - lib/assets/peoples.png
+    - lib/assets/planets.png
+    - lib/assets/species.png
+    - lib/assets/splash.png
+    - lib/assets/star_wars_logo.png
+    - lib/assets/starships.png
+    - lib/assets/vehicles.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swapi/features/vehicles/model/vehicles.dart';
 import 'package:logger/logger.dart';
 
-import 'main.dart';
-import 'model/films.dart';
+import '../../../main.dart';
 
-class FilmPage extends StatelessWidget {
+
+class VehiclesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyFilmsPage(title: 'FILMS PAGE'),
+      home: const MyVehiclesScreen(title: 'VEHICLES PAGE'),
     );
   }
 }
 
-class MyFilmsPage extends StatefulWidget {
-  const MyFilmsPage({Key? key, required this.title}) : super(key: key);
+class MyVehiclesScreen extends StatefulWidget {
+  const MyVehiclesScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyFilmsPage> createState() => _MyFilmsPageState();
+  State<MyVehiclesScreen> createState() => _MyStarshipsPageState();
 }
 
-class _MyFilmsPageState extends State<MyFilmsPage>{
-  Films? films;
+class _MyStarshipsPageState extends State<MyVehiclesScreen>{
+  Vehicles? vehicles;
   final myController = TextEditingController();
 
   @override
@@ -35,7 +36,16 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("FILM PAGE"),
+        title: const Text("VEHICLES PAGE"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -45,7 +55,7 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
               flex: 1,
             ),
             const Image(
-              image: AssetImage("assets/logo.png"),
+              image: AssetImage("lib/assets/logo.png"),
               width: 100,
               height: 100,
             ),
@@ -66,7 +76,7 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Input ID 1-6',
+                      hintText: 'Input ID 1-60',
                       contentPadding:
                       const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
                       focusedBorder: OutlineInputBorder(
@@ -82,14 +92,22 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
                 ),
                 const Spacer(flex: 1),
                 RaisedButton(
-                  color: Colors.white,
-                  child: new Text("Search"),
+                    color: Colors.white,
+                    child: const Text("Search"),
                     onPressed: () {
-                      Films.connectToApi(myController.text).then((value) {
-                        films = value;
-                        setState(() {}
-                        );
-                      });
+                      if (myController.text.isEmpty){
+                        Vehicles.connectToApi("30").then((value) {
+                          vehicles = value;
+                          setState(() {}
+                          );
+                        });
+                      } else {
+                        Vehicles.connectToApi(myController.text).then((value) {
+                          vehicles = value;
+                          setState(() {}
+                          );
+                        });
+                      }
                     }),
                 const Spacer(flex: 1),
               ],
@@ -102,7 +120,18 @@ class _MyFilmsPageState extends State<MyFilmsPage>{
                 const Spacer(
                   flex: 1,
                 ),
-                Text((films != null) ? films!.title + "\n" + films!.episode_id.toString() + "\n" + films!.opening_crawl + "\n" + films!.director + "\n" + films!.producer: "No Data",
+                Text((vehicles != null) ?
+                vehicles!.name! + "\n" +
+                    vehicles!.model! + "\n" +
+                    vehicles!.manufacturer! + "\n" +
+                    vehicles!.costInCredits! + "\n" +
+                    vehicles!.length! + "\n" +
+                    vehicles!.maxAtmospheringSpeed! + "\n" +
+                    vehicles!.crew! + "\n" +
+                    vehicles!.passengers! + "\n" +
+                    vehicles!.cargoCapacity! + "\n" +
+                    vehicles!.consumables! + "\n" +
+                    vehicles!.name! + "\n" : "No Data",
                     style: TextStyle(color: Colors.white)),
                 const Spacer(
                   flex: 1,

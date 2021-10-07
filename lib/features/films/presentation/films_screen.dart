@@ -1,32 +1,34 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import 'main.dart';
-import 'model/peoples.dart';
+import '../../../main.dart';
+import '../model/films.dart';
 
-class PeoplesPage extends StatelessWidget {
+class FilmScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyPeoplesPage(title: 'PEOPLES PAGE'),
+      home: const MyFilmsScreen(title: 'FILMS SCREEN'),
     );
   }
 }
 
-class MyPeoplesPage extends StatefulWidget {
-  const MyPeoplesPage({Key? key, required this.title}) : super(key: key);
+class MyFilmsScreen extends StatefulWidget {
+  const MyFilmsScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MyPeoplesPage> createState() => _MyPeoplesPageState();
+  State<MyFilmsScreen> createState() => _MyFilmsScreenState();
 }
 
-class _MyPeoplesPageState extends State<MyPeoplesPage>{
-  Peoples? peoples;
+class _MyFilmsScreenState extends State<MyFilmsScreen>{
+  Films? films;
   final myController = TextEditingController();
 
   @override
@@ -35,7 +37,16 @@ class _MyPeoplesPageState extends State<MyPeoplesPage>{
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("PEOPLES PAGE"),
+        title: const Text("FILMS SCREEN"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -45,12 +56,9 @@ class _MyPeoplesPageState extends State<MyPeoplesPage>{
               flex: 1,
             ),
             const Image(
-              image: AssetImage("assets/logo.png"),
+              image: AssetImage("lib/assets/logo.png"),
               width: 100,
               height: 100,
-            ),
-            const Spacer(
-              flex: 1,
             ),
             Row(
               children: <Widget>[
@@ -66,7 +74,7 @@ class _MyPeoplesPageState extends State<MyPeoplesPage>{
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Input ID 1-82',
+                      hintText: 'Input ID 1-6',
                       contentPadding:
                       const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
                       focusedBorder: OutlineInputBorder(
@@ -82,11 +90,18 @@ class _MyPeoplesPageState extends State<MyPeoplesPage>{
                 ),
                 const Spacer(flex: 1),
                 RaisedButton(
-                    color: Colors.white,
-                    child: new Text("Search"),
+                  color: Colors.white,
+                  child: new Text("Search"),
                     onPressed: () {
-                      Peoples.connectToApi(myController.text).then((value) {
-                        peoples = value;
+                    if (myController.text.isEmpty){
+                      Films.connectToApi("1").then((value) {
+                        films = value;
+                        setState(() {}
+                        );
+                      });
+                    }
+                      Films.connectToApi(myController.text).then((value) {
+                        films = value;
                         setState(() {}
                         );
                       });
@@ -102,16 +117,13 @@ class _MyPeoplesPageState extends State<MyPeoplesPage>{
                 const Spacer(
                   flex: 1,
                 ),
-                Text((peoples != null) ?
-                peoples!.name + "\n" +
-                    peoples!.height + "\n" +
-                    peoples!.name + "\n" +
-                    peoples!.mass + "\n" +
-                    peoples!.hairColor + "\n" +
-                    peoples!.skinColor + "\n" +
-                    peoples!.eyeColor + "\n" +
-                    peoples!.birthYear + "\n" +
-                    peoples!.gender + "\n" : "No Data",
+                Text((films != null) ?
+                    films!.title! + "\n" +
+                    films!.episodeId!.toString() + "\n" +
+                        films!.openingCrawl! + "\n" +
+                        films!.director! + "\n" +
+                        films!.producer! + "\n" +
+                        films!.releaseDate! + "\n": "No Data",
                     style: TextStyle(color: Colors.white)),
                 const Spacer(
                   flex: 1,

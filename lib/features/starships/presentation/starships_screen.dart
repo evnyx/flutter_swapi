@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swapi/features/starships/model/starships.dart';
 import 'package:logger/logger.dart';
 
-import 'main.dart';
-import 'model/planets.dart';
-import 'model/species.dart';
+import '../../../main.dart';
+import '../../planets/model/planets.dart';
 
-class SpeciesPage extends StatelessWidget {
+class StarshipsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MySpeciesPage(title: 'SPECIES PAGE'),
+      home: const MyStarshipsScreen(title: 'STARSHIPS PAGE'),
     );
   }
 }
 
-class MySpeciesPage extends StatefulWidget {
-  const MySpeciesPage({Key? key, required this.title}) : super(key: key);
+class MyStarshipsScreen extends StatefulWidget {
+  const MyStarshipsScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  State<MySpeciesPage> createState() => _MySpeciesPageState();
+  State<MyStarshipsScreen> createState() => _MyStarshipsPageState();
 }
 
-class _MySpeciesPageState extends State<MySpeciesPage>{
-  Species? species;
+class _MyStarshipsPageState extends State<MyStarshipsScreen>{
+  Starships? starships;
   final myController = TextEditingController();
 
   @override
@@ -36,7 +36,16 @@ class _MySpeciesPageState extends State<MySpeciesPage>{
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text("SPECIES PAGE"),
+        title: const Text("STARSHIPS PAGE"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const MyApp()),
+            );
+          },
+        ),
       ),
       body: Center(
         child: Column(
@@ -46,7 +55,7 @@ class _MySpeciesPageState extends State<MySpeciesPage>{
               flex: 1,
             ),
             const Image(
-              image: AssetImage("assets/logo.png"),
+              image: AssetImage("lib/assets/logo.png"),
               width: 100,
               height: 100,
             ),
@@ -67,7 +76,7 @@ class _MySpeciesPageState extends State<MySpeciesPage>{
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Input ID 1-37',
+                      hintText: 'Input ID 1-60',
                       contentPadding:
                       const EdgeInsets.only(left: 14.0, bottom: 8.0, top: 8.0),
                       focusedBorder: OutlineInputBorder(
@@ -86,8 +95,15 @@ class _MySpeciesPageState extends State<MySpeciesPage>{
                     color: Colors.white,
                     child: new Text("Search"),
                     onPressed: () {
-                      Species.connectToApi(myController.text).then((value) {
-                        species = value;
+                      if (myController.text.isEmpty){
+                        Starships.connectToApi("2").then((value) {
+                          starships = value;
+                          setState(() {}
+                          );
+                        });
+                      }
+                      Starships.connectToApi(myController.text).then((value) {
+                        starships = value;
                         setState(() {}
                         );
                       });
@@ -103,16 +119,22 @@ class _MySpeciesPageState extends State<MySpeciesPage>{
                 const Spacer(
                   flex: 1,
                 ),
-                Text((species != null) ?
-                species!.name + "\n" +
-                    species!.classification + "\n" +
-                    species!.designation + "\n" +
-                    species!.averageHeight + "\n" +
-                    species!.skinColors + "\n" +
-                    species!.hairColors + "\n" +
-                    species!.eyeColors + "\n" +
-                    species!.averageLifespan + "\n" +
-                    species!.language + "\n" : "No Data",
+                Text((starships != null) ?
+                    starships!.name! + "\n" +
+                    starships!.manufacturer! + "\n" +
+                    starships!.costInCredits! + "\n" +
+                    starships!.length! + "\n" +
+                    starships!.maxAtmospheringSpeed! + "\n" +
+                    starships!.crew! + "\n" +
+                    starships!.passengers! + "\n" +
+                    starships!.cargoCapacity! + "\n" +
+                    starships!.consumables! + "\n" +
+                    starships!.hyperdriveRating! + "\n" +
+                    starships!.mGLT! + "\n" +
+                    starships!.starshipClass! + "\n" +
+                    starships!.created! + "\n" +
+                    starships!.edited! + "\n" +
+                    starships!.url! + "\n": "No Data",
                     style: TextStyle(color: Colors.white)),
                 const Spacer(
                   flex: 1,
